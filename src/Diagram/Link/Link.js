@@ -29,11 +29,19 @@ const Link = (props) => {
   const { canvas, portRefs, nodeRefs } = useContextRefs();
   const inputPoint = useMemo(() => getCoords(input, portRefs, nodeRefs, canvas), [input, portRefs, nodeRefs, canvas]);
   /* eslint-disable max-len */
-  const classList = useMemo(() => classNames('bi-diagram-link', { 'readonly-link': link.readonly }, link.className), [link.readonly, link.className]);
-  const outputPoint = useMemo(() => getCoords(output, portRefs, nodeRefs, canvas), [output, portRefs, nodeRefs, canvas]);
+  const classList = useMemo(() => classNames('bi-diagram-link', { 'readonly-link': link.readonly }, link.className), [
+    link.readonly,
+    link.className,
+  ]);
+  const outputPoint = useMemo(() => getCoords(output, portRefs, nodeRefs, canvas), [
+    output,
+    portRefs,
+    nodeRefs,
+    canvas,
+  ]);
   /* eslint-enable max-len */
   const pathOptions = {
-    type: (input.type === 'port' || output.type === 'port') ? 'bezier' : 'curve',
+    type: input.type === 'port' || output.type === 'port' ? 'bezier' : 'curve',
     inputAlignment: input.entity.alignment || null,
     outputAlignment: output.entity.alignment || null,
   };
@@ -56,9 +64,9 @@ const Link = (props) => {
 
   return (
     <g className={classList}>
-      {!link.readonly && (<path d={path} className="bi-link-ghost" onDoubleClick={onDoubleClick} />)}
+      {!link.readonly && <path d={path} className="bi-link-ghost" onDoubleClick={onDoubleClick} />}
       <path d={path} ref={pathRef} className="bi-link-path" onDoubleClick={onDoubleClick} />
-      {link.label && labelPosition && (<LinkLabel position={labelPosition} label={link.label} />)}
+      {link.label && labelPosition && <LinkLabel position={labelPosition} label={link.label} />}
     </g>
   );
 };

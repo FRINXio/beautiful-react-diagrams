@@ -2,12 +2,16 @@ import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { PortAlignment } from '../../shared/Types';
 import makeSvgPath from '../../shared/functions/makeSvgPath';
+import useCanvas from '../../shared/internal_hooks/useCanvas';
 
 /**
  * Segment
  */
 const Segment = (props) => {
-  const { from, to, alignment } = props;
+  const { alignment, from: f, to: t } = props;
+  const canvas = useCanvas();
+  const from = [f[0] + canvas.scrollLeft, f[1] + canvas.scrollTop];
+  const to = [t[0] + canvas.scrollLeft, t[1] + canvas.scrollTop];
   const pathOptions = { type: 'bezier', inputAlignment: alignment };
   const path = useMemo(() => makeSvgPath(from, to, pathOptions), [from, to, alignment]);
 

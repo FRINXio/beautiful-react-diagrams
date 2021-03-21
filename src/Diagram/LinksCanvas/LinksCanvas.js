@@ -12,16 +12,21 @@ import removeLinkFromArray from './removeLinkFromArray';
 const LinksCanvas = (props) => {
   const { nodes, segment, onChange, links } = props;
 
-  const removeFromLinksArray = useCallback((link) => {
-    if (links.length > 0 && onChange) {
-      const nextLinks = removeLinkFromArray(link, links);
-      onChange(nextLinks);
-    }
-  }, [links, onChange]);
+  const removeFromLinksArray = useCallback(
+    (link) => {
+      if (links.length > 0 && onChange) {
+        const nextLinks = removeLinkFromArray(link, links);
+        onChange(nextLinks);
+      }
+    },
+    [links, onChange],
+  );
 
   return (
     <svg className="bi bi-link-canvas-layer">
-      {links && links.length > 0 && links.map((link) => (
+      {links
+      && links.length > 0
+      && links.map((link) => (
         <DiagramLink
           link={link}
           input={findInvolvedEntity(nodes, link.input)}
@@ -30,9 +35,7 @@ const LinksCanvas = (props) => {
           key={`${link.input}-${link.output}`}
         />
       ))}
-      {segment && (
-        <Segment {...segment} />
-      )}
+      {segment && <Segment {...segment} />}
     </svg>
   );
 };

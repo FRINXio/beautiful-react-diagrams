@@ -14,7 +14,7 @@ import './diagram.scss';
  * with the user.
  */
 const Diagram = (props) => {
-  const { schema, onChange, ...rest } = props;
+  const { schema, onChange, containerEl, ...rest } = props;
   const [segment, setSegment] = useState();
   const { current: portRefs } = useRef({}); // keeps the port elements references
   const { current: nodeRefs } = useRef({}); // keeps the node elements references
@@ -71,7 +71,7 @@ const Diagram = (props) => {
   };
 
   return (
-    <DiagramCanvas portRefs={portRefs} nodeRefs={nodeRefs} {...rest}>
+    <DiagramCanvas portRefs={portRefs} nodeRefs={nodeRefs} containerEl={containerEl} {...rest}>
       <NodesCanvas
         nodes={schema.nodes}
         onChange={onNodesChange}
@@ -96,11 +96,13 @@ Diagram.propTypes = {
    * The callback to be performed every time the model changes
    */
   onChange: PropTypes.func,
+  containerEl: PropTypes.instanceOf(HTMLElement),
 };
 
 Diagram.defaultProps = {
   schema: { nodes: [], links: [] },
   onChange: undefined,
+  containerEl: undefined,
 };
 
 export default React.memo(Diagram);
