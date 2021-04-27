@@ -7,9 +7,9 @@ import getRelativePoint from '../../../shared/functions/getRelativePoint';
 const getEntityCoordinates = (entity, portRefs, nodeRefs, canvas = { x: 0, y: 0 }, pan = { x: 0, y: 0 }) => {
   if (entity && entity.type === 'node' && nodeRefs[entity.entity.id]) {
     const nodeEl = nodeRefs[entity.entity.id];
-    const bbox = nodeEl.getBoundingClientRect();
+    const { clientWidth, clientHeight } = nodeEl;
 
-    return [entity.entity.coordinates[0] + (bbox.width / 2), entity.entity.coordinates[1] + (bbox.height / 2)];
+    return [entity.entity.coordinates[0] + (clientWidth / 2), entity.entity.coordinates[1] + (clientHeight / 2)];
   }
 
   if (portRefs && portRefs[entity.entity.id]) {
