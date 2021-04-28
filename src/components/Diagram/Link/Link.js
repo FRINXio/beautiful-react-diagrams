@@ -28,10 +28,10 @@ const Link = (props) => {
   const [labelPosition, setLabelPosition] = useState();
   const { portRefs, nodeRefs } = useContextRefs();
   // eslint-disable-next-line max-len
-  const inputPoint = useMemo(() => getCoords(input, portRefs, nodeRefs), [input, portRefs, nodeRefs]);
+  const inputPoint = getCoords(input, portRefs, nodeRefs);
   /* eslint-disable max-len */
   const classList = useMemo(() => classNames('bi-diagram-link', { 'readonly-link': link.readonly }, link.className), [link.readonly, link.className]);
-  const outputPoint = useMemo(() => getCoords(output, portRefs, nodeRefs), [output, portRefs, nodeRefs]);
+  const outputPoint = getCoords(output, portRefs, nodeRefs);
   /* eslint-enable max-len */
   const pathOptions = {
     type: (input.type === 'port' || output.type === 'port') ? 'bezier' : 'curve',
