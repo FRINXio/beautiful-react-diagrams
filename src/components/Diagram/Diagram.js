@@ -19,6 +19,15 @@ const Diagram = (props) => {
   const { current: portRefs } = useRef({}); // keeps the port elements references
   const { current: nodeRefs } = useRef({}); // keeps the node elements references
 
+  const onCoordinatesUpdate = (coordinates, inputsPorts, outputsPorts) => {
+    inputsPorts.forEach((input) => {
+      portRefs[input].coordinates = coordinates;
+    });
+    outputsPorts.forEach((output) => {
+      portRefs[output].coordinates = coordinates;
+    });
+  };
+
   // when nodes change, performs the onChange callback with the new incoming data
   const onNodesChange = (nextNodes) => {
     if (onChange) {
@@ -27,8 +36,8 @@ const Diagram = (props) => {
   };
 
   // when a port is registered, save it to the local reference
-  const onPortRegister = (portId, portEl) => {
-    portRefs[portId] = portEl;
+  const onPortRegister = (portId, portEl, coordinates) => {
+    portRefs[portId] = { portEl, coordinates };
   };
 
   // when a node is registered, save it to the local reference
@@ -81,6 +90,7 @@ const Diagram = (props) => {
         onDragNewSegment={onDragNewSegment}
         onSegmentFail={onSegmentFail}
         onSegmentConnect={onSegmentConnect}
+        onCoordinatesUpdate={onCoordinatesUpdate}
       />
       <LinksCanvas nodes={schema.nodes} links={schema.links} segment={segment} onChange={onLinkDelete} />
     </DiagramCanvas>
