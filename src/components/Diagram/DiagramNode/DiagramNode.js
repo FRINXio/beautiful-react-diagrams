@@ -7,6 +7,7 @@ import { PortType } from '../../../shared/Types';
 import portGenerator from './portGenerator';
 import useDrag from '../../../shared/internal_hooks/useDrag';
 import useNodeUnregistration from '../../../shared/internal_hooks/useNodeUnregistration';
+import getNodePortsId from '../../../shared/functions/getNodePortsId';
 
 /**
  * A Diagram Node component displays a single diagram node, handles the drag n drop business logic and fires the
@@ -16,7 +17,7 @@ import useNodeUnregistration from '../../../shared/internal_hooks/useNodeUnregis
 const DiagramNode = (props) => {
   const {
     id, content, coordinates, type, inputs, outputs, data, onPositionChange, onPortRegister, onNodeRemove,
-    onDragNewSegment, onMount, onSegmentFail, onSegmentConnect, render, className, disableDrag,
+    onDragNewSegment, onMount, onSegmentFail, onSegmentConnect, render, className, disableDrag, onCoordinatesUpdate,
   } = props;
   const registerPort = usePortRegistration(inputs, outputs, onPortRegister); // get the port registration method
   const { ref, onDragStart, onDrag } = useDrag({ throttleBy: 14 }); // get the drag n drop methods
@@ -39,6 +40,8 @@ const DiagramNode = (props) => {
           dragStartPoint.current[1] - info.offset[1],
         ];
         onPositionChange(id, nextCoords);
+        const node = { inputs, outputs };
+        onCoordinatesUpdate(nextCoords, getNodePortsId(node, 'inputs'), getNodePortsId(node, 'outputs'));
       }
     });
   }
@@ -54,7 +57,7 @@ const DiagramNode = (props) => {
   }, className), [type, className]);
 
   // generate ports
-  const options = { registerPort, onDragNewSegment, onSegmentFail, onSegmentConnect };
+  const options = { registerPort, onDragNewSegment, onSegmentFail, onSegmentConnect, coordinates };
   const InputPorts = inputs.map(portGenerator(options, 'input'));
   const OutputPorts = outputs.map(portGenerator(options, 'output'));
   const customRenderProps = { id, render, content, type, inputs: InputPorts, outputs: OutputPorts, data, className };
@@ -145,6 +148,7 @@ DiagramNode.propTypes = {
    */
   className: PropTypes.string,
   disableDrag: PropTypes.bool,
+  onCoordinatesUpdate: PropTypes.func,
 };
 
 DiagramNode.defaultProps = {
@@ -163,6 +167,7 @@ DiagramNode.defaultProps = {
   onSegmentConnect: undefined,
   className: '',
   disableDrag: false,
+  onCoordinatesUpdate: undefined,
 };
 
 export default React.memo(DiagramNode);

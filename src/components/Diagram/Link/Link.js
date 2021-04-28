@@ -26,12 +26,12 @@ const Link = (props) => {
   const { input, output, link, onDelete } = props;
   const pathRef = useRef();
   const [labelPosition, setLabelPosition] = useState();
-  const { canvas, panVal, scaleVal, portRefs, nodeRefs } = useContextRefs();
+  const { portRefs, nodeRefs } = useContextRefs();
   // eslint-disable-next-line max-len
-  const inputPoint = useMemo(() => getCoords(input, portRefs, nodeRefs, canvas, panVal), [input, portRefs, nodeRefs, canvas, panVal]);
+  const inputPoint = getCoords(input, portRefs, nodeRefs);
   /* eslint-disable max-len */
   const classList = useMemo(() => classNames('bi-diagram-link', { 'readonly-link': link.readonly }, link.className), [link.readonly, link.className]);
-  const outputPoint = useMemo(() => getCoords(output, portRefs, nodeRefs, canvas, panVal), [output, portRefs, nodeRefs, canvas, panVal]);
+  const outputPoint = getCoords(output, portRefs, nodeRefs);
   /* eslint-enable max-len */
   const pathOptions = {
     type: (input.type === 'port' || output.type === 'port') ? 'bezier' : 'curve',
@@ -58,8 +58,8 @@ const Link = (props) => {
   /**
    * for nodes with ports and links it's required to recalculate the link scale based on canvas scale
    */
-  const nextScale = Object.keys(portRefs).length > 0 ? 1 / scaleVal : 1;
-
+  const nextScale = 1;
+  // console.log({nextScale})
   return (
     <g className={classList} style={{ transform: `scale(${nextScale})` }}>
       {!link.readonly && (<path d={path} className="bi-link-ghost" onDoubleClick={onDoubleClick} />)}

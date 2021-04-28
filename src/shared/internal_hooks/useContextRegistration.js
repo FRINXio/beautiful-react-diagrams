@@ -8,10 +8,10 @@ import DiagramContext from '../../Context/DiagramContext';
 export const usePortRegistration = (inputs, outputs, onPortRegister) => {
   const { canvas, ports } = useContext(DiagramContext);
 
-  return useCallback((portId, portElement) => {
+  return useCallback((portId, portElement, coordinates) => {
     if (canvas && (inputs || outputs)) {
       if (ports && !ports[portId]) {
-        onPortRegister(portId, portElement);
+        onPortRegister(portId, portElement, coordinates);
       }
     }
   }, [!!canvas, !!ports, inputs, outputs]);

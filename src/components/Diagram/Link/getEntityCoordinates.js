@@ -1,10 +1,8 @@
-import getRelativePoint from '../../../shared/functions/getRelativePoint';
-
 /**
  * Return the coordinates of a given entity (node or port)
  */
 // eslint-disable-next-line max-len
-const getEntityCoordinates = (entity, portRefs, nodeRefs, canvas = { x: 0, y: 0 }, pan = { x: 0, y: 0 }) => {
+const getEntityCoordinates = (entity, portRefs, nodeRefs) => {
   if (entity && entity.type === 'node' && nodeRefs[entity.entity.id]) {
     const nodeEl = nodeRefs[entity.entity.id];
     const { clientWidth, clientHeight } = nodeEl;
@@ -13,13 +11,10 @@ const getEntityCoordinates = (entity, portRefs, nodeRefs, canvas = { x: 0, y: 0 
   }
 
   if (portRefs && portRefs[entity.entity.id]) {
-    const nextX = canvas.x + pan.x;
-    const nextY = canvas.y + pan.y;
-    const nextCanvas = [nextX, nextY];
-    const portEl = portRefs[entity.entity.id];
-    const bbox = portEl.getBoundingClientRect();
-
-    return getRelativePoint([bbox.x + (bbox.width / 2), bbox.y + (bbox.height / 2)], [nextCanvas[0], nextCanvas[1]]);
+    const { portEl, coordinates } = portRefs[entity.entity.id];
+    const { clientWidth, clientHeight, offsetTop, offsetLeft } = portEl;
+    // eslint-disable-next-line max-len
+    return [coordinates[0] + offsetLeft + (clientWidth / 2), coordinates[1] + offsetTop + (clientHeight / 2)];
   }
 
   return undefined;

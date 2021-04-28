@@ -11,7 +11,10 @@ import getRelativePoint from '../../../shared/functions/getRelativePoint';
  * @constructor
  */
 const Port = (props) => {
-  const { id, canLink, alignment, onDragNewSegment, onSegmentFail, onSegmentConnect, onMount, type, ...rest } = props;
+  const {
+    id, canLink, alignment, onDragNewSegment, onSegmentFail,
+    onSegmentConnect, onMount, type, coordinates, ...rest
+  } = props;
   const { canvas, panVal } = useCanvas();
   const { ref, onDrag, onDragEnd } = useDrag();
 
@@ -41,9 +44,9 @@ const Port = (props) => {
 
   useEffect(() => {
     if (ref.current && onMount) {
-      onMount(id, ref.current);
+      onMount(id, ref.current, coordinates);
     }
-  }, [ref.current]);
+  }, [ref.current, coordinates]);
 
   return (<div className="bi bi-diagram-port" data-port-id={id} ref={ref} {...rest} />);
 };
@@ -57,6 +60,7 @@ Port.propTypes = {
   canLink: PropTypes.func,
   onMount: PropTypes.func,
   alignment: PropTypes.oneOf(['right', 'left', 'top', 'bottom']),
+  coordinates: PropTypes.arrayOf(PropTypes.number),
 };
 
 Port.defaultProps = {
@@ -66,6 +70,7 @@ Port.defaultProps = {
   canLink: () => true,
   onMount: undefined,
   alignment: undefined,
+  coordinates: undefined,
 };
 
 export default React.memo(Port);
