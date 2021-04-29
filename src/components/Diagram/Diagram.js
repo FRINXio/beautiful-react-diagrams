@@ -36,8 +36,8 @@ const Diagram = (props) => {
   };
 
   // when a port is registered, save it to the local reference
-  const onPortRegister = (portId, portEl, coordinates) => {
-    portRefs[portId] = { portEl, coordinates };
+  const onPortRegister = (portId, portEl, coordinates, alignment) => {
+    portRefs[portId] = { portEl, coordinates, alignment };
   };
 
   // when a node is registered, save it to the local reference

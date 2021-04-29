@@ -11,10 +11,11 @@ const getEntityCoordinates = (entity, portRefs, nodeRefs) => {
   }
 
   if (portRefs && portRefs[entity.entity.id]) {
-    const { portEl, coordinates } = portRefs[entity.entity.id];
+    const { portEl, coordinates, alignment } = portRefs[entity.entity.id];
     const { clientWidth, clientHeight, offsetTop, offsetLeft } = portEl;
     // eslint-disable-next-line max-len
-    return [coordinates[0] + offsetLeft + (clientWidth / 2), coordinates[1] + offsetTop + (clientHeight / 2)];
+    const leftOffset = alignment === 'right' ? clientWidth : 0;
+    return [coordinates[0] + offsetLeft + leftOffset, coordinates[1] + offsetTop + (clientHeight / 2)];
   }
 
   return undefined;

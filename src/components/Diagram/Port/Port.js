@@ -44,7 +44,7 @@ const Port = (props) => {
 
   useEffect(() => {
     if (ref.current && onMount) {
-      onMount(id, ref.current, coordinates);
+      onMount(id, ref.current, coordinates, alignment);
     }
   }, [ref.current, coordinates]);
 
