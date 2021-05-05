@@ -14,7 +14,7 @@ const initialSchema = createSchema({
     { input: 'node-1',  output: 'node-2' },
     { input: 'node-2',  output: 'node-3' },
     { input: 'node-2',  output: 'node-4' },
-    { input: 'node-2',  output: 'node-5' },
+    { input: 'node-2',  output: 'node-5', label: 'Sample label' },
   ]
 });
 

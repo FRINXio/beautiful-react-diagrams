@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
+import React, { useRef, useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { LinkType, NodeType, PortType } from '../../../shared/Types';
@@ -19,13 +19,21 @@ const useContextRefs = () => {
   return { canvas, panVal, scaleVal, nodeRefs, portRefs };
 };
 
+const getLabelPosition = (path) => {
+  if (!path) {
+    return null;
+  }
+  const pathElement = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  pathElement.setAttribute('d', path);
+  return getPathMidpoint(pathElement);
+};
+
 /**
  * A Diagram link component displays the link between two diagram nodes or two node ports.
  */
 const Link = (props) => {
   const { input, output, link, onDelete } = props;
   const pathRef = useRef();
-  const [labelPosition, setLabelPosition] = useState();
   const { portRefs, nodeRefs } = useContextRefs();
   // eslint-disable-next-line max-len
   const inputPoint = getCoords(input, portRefs, nodeRefs);
@@ -39,14 +47,7 @@ const Link = (props) => {
     outputAlignment: output.entity.alignment || null,
   };
   const path = useMemo(() => makeSvgPath(inputPoint, outputPoint, pathOptions), [inputPoint, outputPoint]);
-
-  // calculates label position
-  useEffect(() => {
-    if (link.label && inputPoint && outputPoint && pathRef.current) {
-      const pos = getPathMidpoint(pathRef.current);
-      setLabelPosition(pos);
-    }
-  }, [pathRef.current, link.label, inputPoint, outputPoint]);
+  const labelPosition = useMemo(() => getLabelPosition(path), [path]);
 
   // on link delete
   const onDoubleClick = useCallback(() => {
@@ -55,13 +56,8 @@ const Link = (props) => {
     }
   }, [link.readonly, onDelete]);
 
-  /**
-   * for nodes with ports and links it's required to recalculate the link scale based on canvas scale
-   */
-  const nextScale = 1;
-  // console.log({nextScale})
   return (
-    <g className={classList} style={{ transform: `scale(${nextScale})` }}>
+    <g className={classList}>
       {!link.readonly && (<path d={path} className="bi-link-ghost" onDoubleClick={onDoubleClick} />)}
       <path d={path} ref={pathRef} className="bi-link-path" onDoubleClick={onDoubleClick} />
       {link.label && labelPosition && (<LinkLabel position={labelPosition} label={link.label} />)}
