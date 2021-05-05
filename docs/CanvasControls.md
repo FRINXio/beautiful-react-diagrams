@@ -1,6 +1,10 @@
 ```js
 import Diagram, { Canvas, createSchema, useSchema, useCanvasState, CanvasControls } from 'beautiful-react-diagrams';
 
+const Label = () => {
+  return <div className="foo">sample label</div>
+};
+
 // the diagram model
 const initialSchema = createSchema({
   nodes: [
@@ -14,7 +18,7 @@ const initialSchema = createSchema({
     { input: 'node-1',  output: 'node-2' },
     { input: 'node-2',  output: 'node-3' },
     { input: 'node-2',  output: 'node-4' },
-    { input: 'node-2',  output: 'node-5', label: 'Sample label' },
+    { input: 'node-2',  output: 'node-5', label: <Label /> },
   ]
 });
 

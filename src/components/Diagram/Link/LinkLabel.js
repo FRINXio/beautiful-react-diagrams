@@ -13,7 +13,7 @@ const LinkLabel = ({ label, position }) => (
 );
 
 LinkLabel.propTypes = {
-  label: PropTypes.string.isRequired,
+  label: PropTypes.node.isRequired,
   position: PropTypes.arrayOf(PropTypes.number).isRequired,
 };
 
