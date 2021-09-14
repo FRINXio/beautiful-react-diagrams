@@ -2,7 +2,6 @@
 module.exports = {
   plugins: [
     require('autoprefixer'),
-    require('postcss-normalize')({ browsers: 'last 2 versions' }),
     require('postcss-preset-env')({ stage: 0 }),
     require('postcss-fixes'),
     require('postcss-will-change-transition'),
